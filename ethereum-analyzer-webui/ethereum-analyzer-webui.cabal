@@ -17,7 +17,7 @@ source-repository head
   location: https://github.com/zchn/ethereum-analyzer
   branch:   master
   subdir:   ethereum-analyzer-webui
-        
+
 source-repository this
   type:     git
   location: https://github.com/zchn/ethereum-analyzer
@@ -36,8 +36,9 @@ library
                      , mtl
                      , neat-interpolation
                      , optparse-applicative
-                     , prometheus-client
-                     , prometheus-metrics-ghc
+                     , prettyprinter
+                     , prometheus-client < 1.0
+                     , prometheus-metrics-ghc < 1.0
                      , protolude
                      , servant
                      , servant-server
@@ -46,8 +47,7 @@ library
                      , wai
                      , wai-extra
                      , warp
-                     , wl-pprint-text
-                       
+
   exposed-modules:     Ethereum.Analyzer.Web
   other-modules:       Ethereum.Analyzer.Web.API
                      , Ethereum.Analyzer.Web.API.Internal
@@ -55,13 +55,13 @@ library
                      , Ethereum.Analyzer.Web.Server.Handlers
                      , Ethereum.Analyzer.Web.Server.Instrument
                      , Ethereum.Analyzer.Web.Server.Logging
-                                  
+
   ghc-options:         -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints
   hs-source-dirs:      src
   buildable:           True
   default-language:    Haskell98
   default-extensions:  OverloadedStrings
-  
+
 executable ethereum-analyzer-webui
   main-is:             Main.hs
   build-depends:       base >= 4 && < 5,
@@ -70,7 +70,7 @@ executable ethereum-analyzer-webui
                        ethereum-analyzer-webui,
                        hflags,
                        monad-logger
-                       
+
   ghc-options:         -Wall -Wcompat -Wincomplete-record-updates -Wincomplete-uni-patterns -Wredundant-constraints
   hs-source-dirs:      exec_src
   buildable:           True

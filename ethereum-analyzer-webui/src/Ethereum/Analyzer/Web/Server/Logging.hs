@@ -10,17 +10,15 @@ module Ethereum.Analyzer.Web.Server.Logging
   , toKeyword
   ) where
 
-import Protolude hiding (log)
+import Protolude                 hiding (Handler, log)
 
-import Control.Monad.Catch (MonadMask)
-import Control.Monad.Log
-       (Handler, LoggingT, MonadLog, Severity(..), WithSeverity(..),
-        WithTimestamp(..), defaultBatchingOptions, logMessage,
-        mapLogMessageM, renderWithSeverity, renderWithTimestamp,
-        runLoggingT, timestamp, withFDHandler)
-import Data.Time.Format
-       (defaultTimeLocale, formatTime, iso8601DateFormat)
-import Text.PrettyPrint.Leijen.Text (Doc, Pretty(..))
+import Control.Monad.Catch       (MonadMask)
+import Control.Monad.Log         (Handler, LoggingT, MonadLog, Severity(..), WithSeverity(..),
+                                  WithTimestamp(..), defaultBatchingOptions, logMessage,
+                                  mapLogMessageM, renderWithSeverity, renderWithTimestamp,
+                                  runLoggingT, timestamp, withFDHandler)
+import Data.Text.Prettyprint.Doc
+import Data.Time.Format          (defaultTimeLocale, formatTime, iso8601DateFormat)
 
 type LogM msg m = LoggingT (WithSeverity msg) (LoggingT (WithTimestamp (WithSeverity msg)) m)
 
@@ -68,7 +66,7 @@ toKeyword Debug = "debug"
 
 printLogs
   :: (Pretty a, MonadIO m)
-  => Severity -> Handler m Doc -> WithTimestamp (WithSeverity a) -> m ()
+  => Severity -> Handler m (Doc ann) -> WithTimestamp (WithSeverity a) -> m ()
 printLogs severityThreshold handler message =
   when (severityThreshold >= msgSeverity (discardTimestamp message)) $
   handler . renderWithTimestamp timeFormatter (renderWithSeverity pretty) $

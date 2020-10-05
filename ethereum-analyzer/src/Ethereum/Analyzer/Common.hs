@@ -8,12 +8,12 @@ module Ethereum.Analyzer.Common
   , varBytesToWord256
   ) where
 
-import Protolude hiding (show)
+import Protolude          hiding (fromRight, show, toS)
+import Protolude.Conv     (StringConv (..), toS)
 
 import Blockchain.ExtWord
 import Ckev.In.Text
-import Data.ByteString as DB
-import Data.Either (Either(..))
+import Data.ByteString    as DB
 
 fromRight :: b -> Either a b -> b
 fromRight _ (Right v) = v

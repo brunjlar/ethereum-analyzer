@@ -6,18 +6,17 @@ module Ethereum.Analyzer.EVM.CfgAugmentPass
   ( doCfgAugmentPass
   ) where
 
-import Protolude hiding (show)
+import           Protolude                hiding (show)
 
-import Blockchain.ExtWord
-import Blockchain.VM.Opcodes
-import Compiler.Hoopl
+import           Blockchain.ExtWord
+import           Blockchain.VM.Opcodes
+import           Compiler.Hoopl
 
-import Ckev.In.Text
--- import Data.Bits
-import Data.List as DL
-import Data.Set as DS hiding (toList)
-import Ethereum.Analyzer.Common
-import Ethereum.Analyzer.EVM.IR
+import           Ckev.In.Text
+import qualified Data.List                as DL
+import           Data.Set                 as DS hiding (toList)
+import           Ethereum.Analyzer.Common
+import           Ethereum.Analyzer.EVM.IR
 
 type StackTopFact = WithTop (Set Word256)
 

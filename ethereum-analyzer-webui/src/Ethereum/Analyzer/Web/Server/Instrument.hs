@@ -11,13 +11,14 @@ module Ethereum.Analyzer.Web.Server.Instrument
   , defaultPrometheusSettings
   ) where
 
-import Protolude
+import           Protolude               hiding (toS)
+import           Protolude.Conv          (toS)
 
-import Data.ByteString.Builder (byteString)
-import Data.Time.Clock (diffUTCTime, getCurrentTime)
-import qualified Network.HTTP.Types as HTTP
-import qualified Network.Wai as Wai
-import qualified Prometheus as Prom
+import           Data.ByteString.Builder (byteString)
+import           Data.Time.Clock         (diffUTCTime, getCurrentTime)
+import qualified Network.HTTP.Types      as HTTP
+import qualified Network.Wai             as Wai
+import qualified Prometheus              as Prom
 
 -- | Settings that control the behavior of the Prometheus middleware.
 data PrometheusSettings = PrometheusSettings

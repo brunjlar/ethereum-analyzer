@@ -15,14 +15,15 @@ module Ethereum.Analyzer.Solidity.Simple
   , decodeContracts
   ) where
 
-import Protolude hiding ((<>), show)
+import           Protolude                          hiding (show, toS)
+import           Protolude.Conv                     (toS)
 
-import Ckev.In.Text
-import Compiler.Hoopl
-import qualified Data.Text as DT
-import Ethereum.Analyzer.Common
-import Ethereum.Analyzer.Solidity.AstJson
-import Text.PrettyPrint.Leijen.Text hiding ((<$>))
+import           Ckev.In.Text
+import           Compiler.Hoopl
+import qualified Data.Text                          as DT
+import           Ethereum.Analyzer.Common
+import           Ethereum.Analyzer.Solidity.AstJson
+import           Text.PrettyPrint.Leijen.Text       hiding ((<$>))
 
 -- import qualified Text.PrettyPrint.Leijen.Text as PP
 decodeContracts :: Text -> Either Text [Contract]

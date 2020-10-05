@@ -7,12 +7,11 @@ module Ethereum.Analyzer.Solidity.AstJson
   , defSolNode
   ) where
 
-import Protolude hiding ((<>), show)
+import Protolude hiding (show)
 
 import Ckev.In.Text
 import Data.Aeson
-import Data.Aeson.Types
-import Data.HashMap.Lazy hiding (map)
+import Data.HashMap.Lazy            hiding (map)
 import Ethereum.Analyzer.Common
 import Text.PrettyPrint.Leijen.Text as PP
 

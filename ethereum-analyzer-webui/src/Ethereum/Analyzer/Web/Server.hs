@@ -9,28 +9,25 @@ module Ethereum.Analyzer.Web.Server
   , startApp
   ) where
 
-import Protolude hiding (show)
+import           Protolude                               hiding (option)
 
-import Control.Monad.Log (Severity(..))
-import qualified Data.List as List
-import GHC.Stats (getGCStatsEnabled)
-import Network.Wai.Handler.Warp
-       (Port, Settings, defaultSettings, runSettings, setBeforeMainLoop,
+import           Control.Monad.Log                       (Severity(..))
+import qualified Data.List                               as List
+import           Data.Text                               (pack)
+import           GHC.Stats                               (getRTSStatsEnabled)
+import           Network.Wai.Handler.Warp                (Port, Settings, defaultSettings, runSettings, setBeforeMainLoop,
         setPort)
-import qualified Network.Wai.Middleware.RequestLogger as RL
-import Options.Applicative
-       (ParserInfo, auto, eitherReader, execParser, fullDesc, header,
-        help, helper, info, long, metavar, option, progDesc, switch, value)
-import qualified Prometheus as Prom
-import qualified Prometheus.Metric.GHC as Prom
-import Servant (serve)
-import Text.PrettyPrint.Leijen.Text (int, text)
+import qualified Network.Wai.Middleware.RequestLogger    as RL
+import           Options.Applicative                     (ParserInfo, auto, eitherReader, execParser, fullDesc, header,
+                                                          help, helper, info, long, metavar, option, progDesc, switch, value)
+import qualified Prometheus                              as Prom
+import qualified Prometheus.Metric.GHC                   as Prom
+import           Servant                                 (serve)
 
-import Ethereum.Analyzer.Web.API (apiraw)
-import Ethereum.Analyzer.Web.Server.Handlers (server)
-import Ethereum.Analyzer.Web.Server.Instrument
-       (defaultPrometheusSettings, prometheus, requestDuration)
-import qualified Ethereum.Analyzer.Web.Server.Logging as Log
+import           Ethereum.Analyzer.Web.API               (apiraw)
+import           Ethereum.Analyzer.Web.Server.Handlers   (server)
+import           Ethereum.Analyzer.Web.Server.Instrument (defaultPrometheusSettings, prometheus, requestDuration)
+import qualified Ethereum.Analyzer.Web.Server.Logging    as Log
 
 -- | Configuration for the application.
 data Config = Config
@@ -89,13 +86,12 @@ runApp :: Config -> IO ()
 runApp config@Config {..} = do
   requests <- Prom.registerIO requestDuration
   when enableGhcMetrics $ do
-    statsEnabled <- getGCStatsEnabled
+    statsEnabled <- getRTSStatsEnabled
     unless statsEnabled $
       Log.withLogging logLevel $
       Log.log
         Warning
-        (text
-           "Exporting GHC metrics but GC stats not enabled. Re-run with +RTS -T.")
+        ("Exporting GHC metrics but GC stats not enabled. Re-run with +RTS -T." :: Text)
     void $ Prom.register Prom.ghcMetrics
   runSettings settings (middleware requests)
   where
@@ -118,4 +114,4 @@ warpSettings Config {..} =
     (Log.withLogging logLevel printPort)
     (setPort port defaultSettings)
   where
-    printPort = Log.log Informational (text "Listening on :" `mappend` int port)
+    printPort = Log.log Informational (pack $ "Listening on :" <> show port)

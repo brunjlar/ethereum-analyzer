@@ -14,16 +14,15 @@ module Ethereum.Analyzer.Web.API
   , DotCfgResp(..)
   ) where
 
-import Protolude
+import           Protolude                          hiding (toS)
+import           Protolude.Conv                     (toS)
 
-import Data.Aeson
-       (FromJSON(..), ToJSON(..), Value(..), (.:), (.=), object)
-import Data.Aeson.Types (typeMismatch)
-import qualified NeatInterpolation as NI
-import Servant.API
-       ((:<|>)(..), (:>), Get, JSON, MimeRender(..), QueryParam, Raw)
+import           Data.Aeson                         (FromJSON(..), ToJSON(..), Value(..), (.:), (.=), object)
+import           Data.Aeson.Types                   (typeMismatch)
+import qualified NeatInterpolation                  as NI
+import           Servant.API                        ((:<|>)(..), (:>), Get, JSON, MimeRender(..), QueryParam, Raw)
 
-import Ethereum.Analyzer.Web.API.Internal (HTML)
+import           Ethereum.Analyzer.Web.API.Internal (HTML)
 
 -- | ethereum-analyzer API definition.
 type API = Get '[ HTML] RootPage :<|> "users" :> Get '[ JSON] Users :<|> "ea" :> "dotcfg" :> QueryParam "code" Text :> Get '[ JSON] DotCfgResp :<|> "ea" :> "dotcfg2" :> QueryParam "code" Text :> Get '[ JSON] DotCfgResp
